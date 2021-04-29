@@ -12,18 +12,17 @@
 <meta name="viewport" content="width=device-width" />
 
 <!--
-<link rel="stylesheet" href="css/style.css" media="all">
+<link rel="stylesheet" href="css/style.css" media="all" />
 -->
 <style type="text/css">
 
-/*{
+* {
 	-moz-box-sizing:border-box;
 	-webkit-box-sizing:border-box;
 	-o-box-sizing:border-box;
 	-ms-box-sizing:border-box;
 	box-sizing:border-box;
 }
-*/
 
 /*
 html {
@@ -277,7 +276,7 @@ function DFT(data, frec=[]){	// frecに設定された添字番号が2つなら�
 //oscillator.frequency = 440Hz	0～±ナイキスト周波数(サンプリング周波数の1/2=22050Hz)	負数は逆位相
 //oscillator.detune = 0セント	約-153600～+153600	1200セント=1オクターブ
 function send(source){
-	const bps = 0.125;	// シンボル間隔 = ΔT + GI(ガードインターバル)		1シンボルあたり同期信号の半周期のタイミングで送信
+	const bps = 0.25;	// シンボル間隔 = ΔT + GI(ガードインターバル)		1シンボルあたり同期信号の半周期のタイミングで送信
 	var audioContext = new (AudioContext || webkitAudioContext)();
 	
 	var compressor = audioContext.createDynamicsCompressor();	// クリッピング(振幅値のオーバーフロー)による歪みを防止
@@ -420,18 +419,18 @@ function receive(){
 				sync : {
 					value : null,
 					ave : {mean:null, median:null, stdev:null},
-					aveFunc : createAverage(20, 2),
+					aveFunc : createAverage(20, 4),
 				},
 				data : {
 					value : null,
 					ave : {mean:null, median:null, stdev:null},
-					aveFunc : createAverage(20, 2),
+					aveFunc : createAverage(20, 4),
 					result : null,
 				},
 				check : {
 					value : null,
 					ave : {mean:null, median:null, stdev:null},
-					aveFunc : createAverage(20, 2),
+					aveFunc : createAverage(20, 4),
 					result : null,
 				},
 			};
@@ -528,7 +527,7 @@ function receive(){
 				if(Math.sign(syncState) == Math.sign(num.sync.ave.mean)){
 					
 					syncState += Math.sign(syncState);
-					if(Math.abs(syncState) >= 2){			// 同じ符号が連続で続いた場合
+					if(Math.abs(syncState) >= 3){			// 同じ符号が連続で続いた場合
 						syncState = -Math.sign(syncState);	// 符号を反転させる
 						
 						// 時間を計測	同期信号取得中
